@@ -3,21 +3,19 @@
 
 using namespace std;
 
-int n, m, k;
+long long n, sum = 0;
 
 int main()
 {
 	ios::sync_with_stdio(false);
 	cin.tie(NULL);
-	cin>>n>>m>>k;
-
-	for(int i = 0; i < k; i++)
+	cin>>n;
+	for(int i = 0; i < n; i++)
 	{
-		if(n < m * 2)m--;
-		else n--;
+		long long temp;cin>>temp;
+		sum += temp;
 	}
-
-	cout<<min(n / 2, m);
-
+	sum -= n-1;
+	cout<<sum;
 	return 0;
 }
