@@ -13,6 +13,7 @@ int main()
 	while(getline(cin, line))
 	{
 		int size = line.length();
+		if(size == 1 && line[0] == '.')break;
 		bool flag = false;
 		for(int i = 0; i < size; i++)
 		{
