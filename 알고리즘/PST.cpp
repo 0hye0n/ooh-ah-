@@ -14,11 +14,6 @@ struct Node{
     int lNum, rNum; // 이 노드의 왼쪽 자식, 오른쪽 자식 노드의 번호
     Node(): Node(-1, -1, -1){}
     Node(int ns1, int ne1, int nNum1): val(0), ns(ns1), ne(ne1), nNum(nNum1), lNum(-1), rNum(-1){}
-
-    void initialize()
-    {
-    	Node(-1, -1, -1);
-    }
 };
  
 struct PersistentSegTree{
@@ -32,12 +27,7 @@ struct PersistentSegTree{
         // 0번 트리를 비어있는 포화 이진 트리로 구축한다. 따라서 항상 TN = 1로 시작
         root[TN++] = initialize(0, MAX_ST/2);
     }
- 	
- 	void init()
- 	{
- 		fill(root, root+MAX, -1);
- 		for(int i = 0; i < MAX_NODE; i++) node[i].initialize();
- 	}
+ 
     // 초기화: 비어있는 포화 이진 트리 구축 후 0번 트리로 설정
     int initialize(int s, int e){
         Node &curr = node[ncnt] = Node(s, e, ncnt);
@@ -91,40 +81,10 @@ struct PersistentSegTree{
     }
 };
 
-
-int t;
-Node n;
-PersistentSegTree pst;
-
 int main()
 {
-	ios::sync_with_stdio(false);
-	cin.tie(NULL);
-	cin>>t;
-	while(t--)
-	{
-		int n, m, pos = 0;cin>>n>>m;
-		pair<int, int> coord[n];
-		int arr[n];
-		for(int i = 0; i < n; i++)cin>>coord[i].first>>coord[i].second;
-		
-		sort(coord, coord + n);
-		for(int i = 0; i < n; i++) cout<<coord[i].first<<" "<<coord[i].second<<"\n";
-		pst.addNode(coord[0].second, 1);
-		arr[pos] = coord[0].first;
-		pos++;
-		for(int i = 1; i < n; i++)
-		{
-			if(coord[i].first == coord[i - 1].first && coord[i].second == coord[i - 1].second)continue;
-			pst.addNode(coord[i].second, 1);
-			arr[pos] = coord[i].first;
-			pos++; 
-		}
-		for(int i = 1; i <= pos; i++)
-		{
-			cout<<pst.sum(i, 1, 2)<<"\n";
-		}
-		pst.init();
-	}
-	return 0;
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    
+    return 0;
 }
