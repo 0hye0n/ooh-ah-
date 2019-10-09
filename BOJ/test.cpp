@@ -90,17 +90,26 @@
 #define sz(v) ((int)(v).size())
 #define all(v) (v).begin(),(v).end()
 
-using namespace std;
+using namespace std; 
+/* run this program using the console pauser or add your own getch, system("pause") or input loop */
 
-void solve()
-{
 
-}
-
-int main()
-{
-	ios::sync_with_stdio(false);
-	cin.tie(NULL);
-	
+int main() {
+	int n, i=2;
+	cin>>n;
+	while(i < n)
+	{
+		if(n%i==0)
+		{
+			cout<<i<<"\n";
+			n=n/i;
+		}
+		else if(n==1)
+		{
+			break;
+		}
+		else
+			i++;
+	}
 	return 0;
 }
