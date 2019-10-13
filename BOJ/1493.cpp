@@ -3,42 +3,91 @@
 
 using namespace std;
 
-int len[4], n;
+long long l, w, h, n, need[29], cube[29], ans = 0;
 
-vector <pair<int, int>> v;
-
-int find_len2(int length)
+long long findcube(long long l, long long w, long long h)
 {
-	for(int i = 1;; i *= 2)
+	long long mn = min<long long>({l, w, h});
+
+	for(long long i = 0, j = 1;; i++, j <<= 1)
 	{
-		if(length < i) return i / 2;
+		if(mn < j)return i - 1;
 	}
+}
+
+void solve(long long l, long long w, long long h)
+{
+	//cout<<l<<" "<<w<<" "<<h<<"\n";
+	if(l <= 0 || w <= 0 || h <= 0) return;
+
+	long long val = findcube(l, w, h);
+	long long len = 1 << val;
+	need[val] += (l / len) * (w / len) * (h / len);
+
+	solve(l % len, (w / len) * len, (h / len) * len);
+	solve((l /len) * len, w % len, (h / len) * len);
+	solve(l % len, w % len, (h / len) * len);
+	solve((l /len) * len, (w / len) * len, h % len);
+	solve(l % len, (w / len) * len, h % len);
+	solve((l /len) * len, w % len, h % len);
+	solve(l % len, w % len, h % len);
 }
 
 int main()
 {
-	ios::sync_with_stdio(false);
+	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
-	
-	cin>>len[0]>>len[1]>>len[2]>>n;
 
-	sort(len, len + 3);
+	cin>>l>>w>>h>>n;
 
-	for(int i = 0; i < n; i++)
+	for(long long i = 0; i < n; i++)
 	{
-		int length, num;cin>>length>>num;
-		v.push_back(make_pair((int)pow(2, length), num));
+		long long x, y;cin>>x>>y;
+		cube[x] += y;
 	}
 
-	sort(v.begin(), v.end(), greater<pair<int, int>>());
-
-
-	while
+	solve(l, w, h);
 	
+	long long needpos = 20;
+	bool flag = false;
+	while(needpos >= 0)
+	{
+		if(need[needpos] == 0)
+		{
+			while(!need[needpos])
+			{
+				needpos--;
+				if(needpos == -1)
+				{
+					flag = true;
+					break;	
+				}
+			} 
+		}
+		if(flag)break;
 
-	
+		if(need[needpos] > cube[needpos])
+		{
+			if(needpos == 0)
+			{
+				cout<<"-1";
+				return 0;
+			}
+			ans += cube[needpos];
+			need[needpos] -= cube[needpos];
+			need[needpos - 1] += need[needpos] * 8;
+			need[needpos] = cube[needpos] = 0;
 
+		}
 
+		else
+		{
+			ans += need[needpos];
+			cube[needpos] -= need[needpos];
+			need[needpos] = 0;
 
+		}
+	}
+	cout<<ans;
 	return 0;
 }

@@ -3,22 +3,22 @@
 
 using namespace std;
 
-int n, arr[29][29];
-
-
-void solve()
-{
-	
-}
+long long dp[99], n, sum = 0;
 
 int main()
 {
 	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
 	cin>>n;
-	for(int i = 0; i < n; i++)
-		for(int j = 0; j < n; j++)
-			cin>>arr[i][j];
-	solve();
+
+	dp[1] = 1;
+	dp[2] = 1;
+	sum = 1;
+	for(int i = 3; i <= n; i++)
+	{
+		dp[i] = sum + 1;
+		sum += dp[i - 1];
+	}
+	cout<<dp[n];
 	return 0;
 }
