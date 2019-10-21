@@ -30,3 +30,16 @@ active.classList.toggle('abc');
 
 //eventually class is needed for many elements
 
+/*
+<a id = "target" href = "./demo1.html">ot</a>
+*/
+
+var target = document.getElementById(target);
+
+//http://localhost/webjs/Element/demo1.html
+console.log('target.href', target.href);
+//./demo1.html
+console.log('target.getAttribute("href")', target.getAttribute("href"));
+
+
+//Element <- HTMLElement <- HTML00Element
