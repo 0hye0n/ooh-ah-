@@ -1,91 +1,54 @@
 #define _USE_MATH_DEFINES
-#include <iostream>
-#include <string>
-#include <cstring>
-#include <vector>
-#include <algorithm>
+#include <bits/stdc++.h>
 
 using namespace std;
 
+int dp[][][], len[509];
 string a;
-int n, len[509], dp[100009], mx = 0;
-string v[509];
-bool check[100009][509];
-vector<vector<int>> pos_v;
-vector<int> fail;
 
-void make_fail(string target)
+
+vector<int> make_fail(string target)
 {
-	fail.clear();
 	int len = target.length();
-	fail.resize(len);
+	vector<int> fail(len, 0);
+
 	for(int i = 1, j = 0; i < len; i++)
 	{
 		while(j > 0 && target[i] != target[j]) j = fail[j - 1];
 		if(target[i] == target[j]) fail[i] = ++j;
 	}
+
+	return fail;
 }
 
-void kmp(int idx)
+vector<int> kmp(string a, string b)
 {
-	int lena = a.length(), lenb = len[idx];
-	make_fail(v[idx]);
+	int alen = a.length(), blen = b.length();
+	vector<int> fail = make_fail(b), ret;
 
-	for(int i = 0, j = 0; i < lena; i++)
+	for(int i = 0, j = 0; i < alen; i++)
 	{
-		while(j > 0 && a[i] != v[idx][j]) j = fail[j - 1];
+		while(j > 0 && a[i] != b[j]) j = fail[j - 1];
 
-		if(a[i] == v[idx][j])
+		if(a[i] == b[j])
 		{
-			if(j == lenb - 1)
+			if(j == blen - 1)
 			{
-				check[i - lenb + 1][idx] = true;
+				ret.push_back(i - blen + 1);
 				j = fail[j];
 			}
 
-			else ++j;
+			else j++;
 		}
 	}
-}
-
-int solve(int pos)
-{
-	if(pos >= a.length()) return 0;
-
-	int& ret = dp[pos];
-
-	if(ret != -1) return ret;
-
-	ret = solve(pos + 1);
-
-	for(int i = 0; i < n; i++)
-	{
-		if(check[pos][i])
-		ret = max<int>(len[i] + solve(pos + len[i]), ret);
-	}
-
 	return ret;
 }
 
 int main()
 {
-	ios::sync_with_stdio(false);
+	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
-	cin>>a>>n;
-	pos_v.resize(a.length() + 1);
-	memset(dp, -1, sizeof(dp));
-	for(int i = 0; i < n; i++)
-	{
-		cin>>v[i];
-	}
+	
 
-	for(int i = 0; i < n; i++)
-	{
-		len[i] = v[i].length();
-		kmp(i);
-	}
-
-	int alen = a.length();
-	cout<<solve(0);
 	return 0;
 }

@@ -1,115 +1,42 @@
-#define _USE_MATH_DEFINES
-
-#ifndef _GLIBCXX_NO_ASSERT
-#include <cassert>
-#endif
-#include <cctype>
-#include <cerrno>
-#include <cfloat>
-#include <ciso646>
-#include <climits>
-#include <clocale>
-#include <cmath>
-#include <csetjmp>
-#include <csignal>
-#include <cstdarg>
-#include <cstddef>
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
-#include <ctime>
-
-#if __cplusplus >= 201103L
-#include <ccomplex>
-#include <cfenv>
-#include <cinttypes>
-#include <cstdalign>
-#include <cstdbool>
-#include <cstdint>
-#include <ctgmath>
-#include <cwchar>
-#include <cwctype>
-#endif
-
-// C++
-#include <algorithm>
-#include <bitset>
-#include <complex>
-#include <deque>
-#include <exception>
-#include <fstream>
-#include <functional>
-#include <iomanip>
-#include <ios>
-#include <iosfwd>
 #include <iostream>
-#include <istream>
-#include <iterator>
-#include <limits>
-#include <list>
-#include <locale>
-#include <map>
-#include <memory>
-#include <new>
-#include <numeric>
-#include <ostream>
-#include <queue>
-#include <set>
-#include <sstream>
-#include <stack>
-#include <stdexcept>
-#include <streambuf>
-#include <string>
-#include <typeinfo>
-#include <utility>
-#include <valarray>
+#include <thread>
+#include <mutex>
+#include <functional>
 #include <vector>
 
-#if __cplusplus >= 201103L
-#include <array>
-#include <atomic>
-#include <chrono>
-#include <condition_variable>
-#include <forward_list>
-#include <future>
-#include <initializer_list>
-#include <mutex>
-#include <random>
-#include <ratio>
-#include <regex>
-#include <scoped_allocator>
-#include <system_error>
-#include <thread>
-#include <tuple>
-#include <typeindex>
-#include <type_traits>
-#include <unordered_map>
-#include <unordered_set>
-#endif
+using namespace std;
 
-#define sz(v) ((int)(v).size())
-#define all(v) (v).begin(),(v).end()
+//mutex mtx;
 
-using namespace std; 
-/* run this program using the console pauser or add your own getch, system("pause") or input loop */
+void solve(int &num, mutex &m)
+{
+    lock_guard<mutex> lock(m);
+    for(int i = 0; i < 100; i++)
+    {
+        cout<<i<<"num == "<<num<<"\n";
+    }
+}
 
+int main()
+{
+    ios_base::sync_with_stdio(false);
+    int cnt = 0;
+    mutex mtx;
+    vector<thread> threads;
 
-int main() {
-	int n, i=2;
-	cin>>n;
-	while(i < n)
-	{
-		if(n%i==0)
-		{
-			cout<<i<<"\n";
-			n=n/i;
-		}
-		else if(n==1)
-		{
-			break;
-		}
-		else
-			i++;
-	}
-	return 0;
+    for(int i = 0; i < 10; i++)
+    {
+        threads.push_back(thread(solve, ref(cnt), ref(mtx)));
+    }
+
+    //for(auto p : threads) p.join();
+
+    for(int i = 0; i < 10; i++)
+    {
+        threads[i].join();
+    }
+
+    cout<<"finishied"<<"\n";
+
+    return 0;
 }

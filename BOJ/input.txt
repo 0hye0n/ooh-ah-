@@ -1,5 +1,1 @@
-abcd
-aaaa
-ababab
-abcdab
-.
+a + v + 
