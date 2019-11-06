@@ -2,35 +2,49 @@
 
 using namespace std;
 
-int sum(int l, int r, int nodenum, int node_l, int node_r)
+int n;
+
+long long init(vector<long long> &arr, vector<long long> &tree, int node, int s, int e)
 {
-	if(r < node_l || node_r < l) return 0;
-	if(l <= node_l && node_r <= r) return arr[nodenum];
-	int mid = (node_l + node_r) >> 1;
-	return sum(l, r, nodenum * 2, node_l, mid) + sum(l, r, nodenum * 2 + 1, mid + 1, node_r);
+	if(s == e) return tree[node] = arr[s];
+
+	int mid = (s + e) >> 1;
+	return tree[node] = init(arr, tree, node * 2, s, mid) + init(arr, tree, node * 2 + 1, mid + 1, e);
 }
 
-void update(int i, int val)
+void update(vector<long long> &tree, int node, int s, int e, int idx, long long diff)
 {
-	i += size;
-	arr[i] = val;
-	while(i > 1)
+	if(!(s <= idx && idx <= e)) return;
+
+	tree[node] += diff;
+
+	if(s != e)
 	{
-		i /= 2;
-		arr[i] = arr[i * 2] + arr[i * 2 + 1];
+		int mid = (start + end) >> 1;
+		update(tree, node * 2, s, mid, idx, diff);
+		update(tree, node * 2 + 1, mid + 1, e, idx, diff);
 	}
 }
 
-void construct()
+long long sum(vector<long long> &tree, int node, int s, int e, int left, int right)
 {
-	for(int i = MAX_ST / 2 - 1; i > 0; i--) arr[i] = arr[i * 2] + arr[i * 2 + 1];
+	if(left > e || right < s) return 0;
+	if(left <= s && e <= right) return tree[node];
+
+	int mid = (s + e) >> 1;
+	return sum(tree, node * 2, s, mid, left, right) + sum(tree, node * 2 + 1, mid + 1, e, left, right);
 }
+
+
 
 int main()
 {
 	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
 	freopen("input.txt", "r", stdin);
+	int h = (int)ceil(log2(n));
+	int tree_size = (1 << (h + 1));
+
 
 	return 0;
 }
